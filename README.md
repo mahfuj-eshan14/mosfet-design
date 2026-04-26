@@ -3,7 +3,7 @@
 
 This repository contains the full process and device simulation for a sub-micron MOSFET using the **Silvaco TCAD** suite. The project utilizes **ATHENA** for process fabrication and **ATLAS** for electrical characterization.
 
-## 🚀 Project Overview
+##  Project Overview
 
 The simulation follows a standard fabrication flow for an N-channel MOSFET, followed by an $I_D-V_{DS}$ sweep to analyze the transistor's performance under different gate biases.
 
@@ -14,7 +14,7 @@ The simulation follows a standard fabrication flow for an N-channel MOSFET, foll
 
 ---
 
-## 🛠️ Simulation Flow
+##  Simulation Flow
 
 ### 1. Fabrication (ATHENA)
 The device is built on a P-type Silicon substrate ($1 \times 10^{15}$ Boron concentration).
@@ -31,7 +31,7 @@ The electrical simulation solves for carrier transport across the structure.
 
 ---
 
-## 📊 Visual Results
+##  Visual Results
 
 ### Process & Structural Output
 The fabrication results in a symmetrical MOSFET structure with defined doping profiles and a optimized mesh for numerical stability.
