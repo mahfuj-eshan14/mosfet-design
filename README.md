@@ -38,25 +38,12 @@ The fabrication results in a symmetrical MOSFET structure with defined doping pr
 
 | **Final Structure** | **Doping Concentration** | **Simulation Mesh** |
 | :---: | :---: | :---: |
-| ![MOSFET](mosfet.png) | ![Doping](dop.png) | ![Mesh](mesh.png) |
+| ![MOSFET](mosfet.png) | ![Doping](doppingconcentration.png) | ![Mesh](mesh.png) |
 
 ### Electrical Characteristics
 The $I_D-V_{DS}$ curves below demonstrate the MOSFET entering the saturation region as Drain Voltage increases.
 
-![IV Curves](curve.png)
+![IV Curves](Id-Idscurve.png)
 
 ---
 
-## 💻 Simulation Script
-
-The core logic is contained in the `.in` file. Below is the simplified block for the $I-V$ sweep:
-
-```tcad
-# ATLAS Characterization Block
-solve vgate=1 outf=solve_tmp1
-solve vgate=2 outf=solve_tmp2
-solve vgate=5 outf=solve_tmp3
-
-load infile=solve_tmp1
-log outf=mos1.log
-solve name=drain vdrain=0 vfinal=3.3 vstep=0.3
