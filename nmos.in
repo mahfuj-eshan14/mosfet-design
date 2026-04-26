@@ -1,0 +1,76 @@
+go athena
+
+# --- Simulation mesh definition ---
+line  x loc=0.00 spac=0.005
+line  x loc=0.09 spac=0.003   
+line  x loc=0.18 spac=0.005
+line  x loc=0.36 spac=0.010
+
+line  y loc=0.00 spac=0.001   # surface
+line  y loc=0.02 spac=0.002   # near-surface junction
+line  y loc=0.10 spac=0.010
+line  y loc=0.30 spac=0.030
+line  y loc=0.60 spac=0.060
+
+# --- Initialize substrate: p-type Si, (100) orientation ---
+init  silicon orient=100 c.boron=1e15 two.d
+
+# --- Pad oxide + nitrogen ambient (stress relief) ---
+diffuse time=10 temp=1000 dryo2
+etch    oxide all
+
+# --- STI definition (simplified active area mask) ---
+deposit oxide thickness=0.01 divisions=5
+
+# --- p-well formation (retrograde well) ---
+implant boron energy=200 dose=2e13  # deep retrograde
+implant boron energy=100 dose=5e12  # mid-depth
+implant boron energy=40  dose=3e12  # punch-through stop
+
+# --- Vth adjust implant ---
+implant boron energy=30 dose=3e12
+
+# --- Gate oxide growth: 4 nm dry oxidation at 850°C ---
+etch    oxide all
+diffuse time=15 temp=850 dryo2 press=1.0
+
+# --- Poly-Si gate deposition (n+ doped, 150 nm) ---
+deposit polysilicon thickness=0.15 divisions=5
+implant phosphorus energy=10 dose=5e15  # n+ poly doping
+
+# --- Gate patterning (180 nm gate length) ---
+etch    polysilicon left   p1.x=0.09
+etch    polysilicon right  p1.x=0.27
+
+# --- LDD (lightly-doped drain) extension implant ---
+implant arsenic energy=10 dose=1e13 tilt=0
+
+# --- Sidewall spacer oxide (30 nm) ---
+deposit oxide thickness=0.03 divisions=4
+etch    oxide dry thick=0.03       # anisotropic etch → spacers
+
+# --- Main S/D implant (arsenic, high dose) ---
+implant arsenic energy=30 dose=5e15
+
+# --- Halo (pocket) implant (p-type, angled) ---
+implant boron energy=30 dose=5e12 tilt=25 rotation=0
+implant boron energy=30 dose=5e12 tilt=25 rotation=180
+
+# --- RTA anneal: 1000°C, 10 seconds ---
+diffuse time=0.167 temp=1000  # spike anneal equivalent
+
+# --- BPSG ILD deposition ---
+deposit oxide thickness=0.30 divisions=5
+
+# --- Contact etch & electrode definition ---
+etch    oxide left  p1.x=0.04 p2.x=0.04   # source contact
+etch    oxide right p1.x=0.32 p2.x=0.32  # drain contact
+
+electrode name=gate   x=0.18  top
+electrode name=source x=0.04  top
+electrode name=drain  x=0.32  top
+electrode name=bulk   bottom
+
+# --- Save structure ---
+struct  outfile=nmos180_process.str
+tonyplot nmos180_process.str
